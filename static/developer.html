@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Developer</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Developer</h1>
+      <p id="adminStatus">Enter the admin token to manage tracks and runs.</p>
+    </div>
+    <div class="summary">
+      <a class="button" href="/">Leaderboard</a>
+      <button id="reloadButton" type="button">Reload</button>
+    </div>
+  </header>
+
+  <main class="adminLayout">
+    <section class="adminPanel">
+      <h2>Access</h2>
+      <div class="adminTokenRow">
+        <label>
+          Admin token
+          <input id="adminToken" type="password" autocomplete="off" placeholder="DEMO_ADMIN_TOKEN">
+        </label>
+        <button id="saveTokenButton" type="button">Save</button>
+      </div>
+    </section>
+
+    <section class="adminStats" aria-label="System summary">
+      <div><dt>Runs</dt><dd id="statRuns">-</dd></div>
+      <div><dt>Tracks</dt><dd id="statTracks">-</dd></div>
+      <div><dt>Variants</dt><dd id="statVariants">-</dd></div>
+      <div><dt>Disk free</dt><dd id="statDisk">-</dd></div>
+    </section>
+
+    <section class="adminPanel">
+      <div class="sectionHeader">
+        <h2>Tracks</h2>
+        <button id="newTrackButton" type="button">New Track</button>
+      </div>
+      <div class="tableWrap">
+        <table class="adminTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Order</th>
+              <th>Min MS</th>
+              <th>Max MS</th>
+              <th>Runs</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tracksBody"></tbody>
+        </table>
+      </div>
+      <form id="trackForm" class="adminForm" hidden>
+        <h3 id="trackFormTitle">Track</h3>
+        <label>
+          ID
+          <input id="trackIdInput" required pattern="[a-z0-9_-]{1,32}" placeholder="new_track">
+        </label>
+        <label>
+          Display name
+          <input id="trackNameInput" required maxlength="80" placeholder="New Track">
+        </label>
+        <label>
+          Sort order
+          <input id="trackOrderInput" required type="number" min="0" max="10000" value="100">
+        </label>
+        <label>
+          Min time ms
+          <input id="trackMinInput" required type="number" min="1" value="1">
+        </label>
+        <label>
+          Max time ms
+          <input id="trackMaxInput" required type="number" min="1" value="600000">
+        </label>
+        <div class="formActions">
+          <button type="submit">Save Track</button>
+          <button id="cancelTrackButton" type="button">Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="adminPanel">
+      <div class="sectionHeader">
+        <h2>Runs</h2>
+        <label>
+          Track filter
+          <select id="runTrackFilter"></select>
+        </label>
+      </div>
+      <div class="tableWrap">
+        <table class="adminTable runsTable">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Track</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th>Uploaded</th>
+              <th>Files</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="runsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="adminPanel dangerZone">
+      <h2>Generated Media</h2>
+      <p>Deletes cached download variants only. Original uploaded videos and thumbnails are kept.</p>
+      <button id="resetGeneratedButton" type="button">Clear Generated Variants</button>
+    </section>
+  </main>
+
+  <script src="/developer.js"></script>
+</body>
+</html>

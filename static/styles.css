@@ -1,0 +1,404 @@
+:root {
+  color-scheme: dark;
+  --bg: #0e1116;
+  --panel: #171c24;
+  --panel-soft: #1f2630;
+  --line: #303947;
+  --text: #f2f5f8;
+  --muted: #9ba8b7;
+  --accent: #48b7a7;
+  --accent-2: #d2a24c;
+  --danger: #e06c75;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+button,
+.button,
+input,
+select {
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #11161d;
+  color: var(--text);
+  font: inherit;
+}
+
+button,
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+button:hover,
+.button:hover {
+  border-color: var(--accent);
+}
+
+button:disabled,
+.disabled {
+  cursor: not-allowed;
+  opacity: .45;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0 10px;
+}
+
+label {
+  display: grid;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.topbar {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px clamp(16px, 3vw, 34px);
+  border-bottom: 1px solid var(--line);
+  background: #12171f;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1;
+}
+
+h2 {
+  margin: 0 0 14px;
+  font-size: 18px;
+}
+
+.topbar p {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(360px, .9fr);
+  gap: 18px;
+  padding: 18px clamp(16px, 3vw, 34px) 34px;
+}
+
+.leaderboard,
+.replay {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.leaderboard {
+  min-width: 0;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 180px minmax(160px, 1fr);
+  gap: 10px;
+  padding: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: middle;
+}
+
+th {
+  color: #c4d0dd;
+  font-size: 12px;
+  font-weight: 650;
+  text-transform: uppercase;
+}
+
+tbody tr {
+  cursor: pointer;
+}
+
+tbody tr:hover,
+tbody tr.active {
+  background: var(--panel-soft);
+}
+
+.thumb {
+  width: 82px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #0a0d12;
+  border: 1px solid var(--line);
+}
+
+.thumbFallback {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.time {
+  font-variant-numeric: tabular-nums;
+}
+
+.status {
+  display: inline-flex;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  padding: 3px 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.status.ready {
+  border-color: rgba(72, 183, 167, .55);
+  color: #8ae0d4;
+}
+
+.status.failed,
+.status.thumbnail_failed {
+  border-color: rgba(224, 108, 117, .55);
+  color: #ef9aa2;
+}
+
+.empty {
+  margin: 18px;
+  color: var(--muted);
+}
+
+.replay {
+  padding: 14px;
+}
+
+.videoShell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #06080b;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+  display: none;
+  background: #000;
+}
+
+#videoPlaceholder {
+  color: var(--muted);
+}
+
+.metadata {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.metadata div {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #121820;
+}
+
+dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+dd {
+  margin: 3px 0 0;
+  overflow-wrap: anywhere;
+}
+
+code {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #0c1117;
+  padding: 2px 5px;
+  color: #c8d5e2;
+}
+
+.downloadControls {
+  display: grid;
+  grid-template-columns: 1fr 1fr 100px 132px;
+  gap: 10px;
+  align-items: end;
+}
+
+.jobStatus {
+  min-height: 22px;
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+
+@media (max-width: 980px) {
+  .topbar {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .downloadControls {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .controls,
+  .downloadControls,
+  .metadata {
+    grid-template-columns: 1fr;
+  }
+}
+
+.adminLayout {
+  display: grid;
+  gap: 18px;
+  padding: 18px clamp(16px, 3vw, 34px) 34px;
+}
+
+.adminPanel,
+.adminStats {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 14px;
+}
+
+.adminTokenRow,
+.sectionHeader {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.adminStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.adminStats div {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #121820;
+}
+
+.adminTable {
+  min-width: 860px;
+}
+
+.runsTable {
+  min-width: 1040px;
+}
+
+.rowActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.rowActions button,
+.rowActions .button {
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+.adminForm {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.adminForm h3 {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.formActions {
+  display: flex;
+  gap: 10px;
+  align-items: end;
+}
+
+.dangerZone p {
+  margin: 0 0 12px;
+  color: var(--muted);
+}
+
+@media (max-width: 980px) {
+  .adminStats,
+  .adminForm {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .adminTokenRow,
+  .sectionHeader,
+  .adminStats,
+  .adminForm {
+    grid-template-columns: 1fr;
+  }
+}

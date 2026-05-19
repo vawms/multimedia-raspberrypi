@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leaderboard</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Leaderboard</h1>
+      <p id="serverStatus">Checking server...</p>
+    </div>
+    <div class="summary">
+      <span id="runCount">0 runs</span>
+      <button id="refreshButton" type="button">Refresh</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="leaderboard" aria-label="Leaderboard">
+      <div class="controls">
+        <label>
+          Track
+          <select id="trackSelect"></select>
+        </label>
+        <label>
+          Search
+          <input id="searchInput" type="search" placeholder="Player name">
+        </label>
+      </div>
+      <div class="tableWrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Preview</th>
+              <th>Player</th>
+              <th>Time</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody"></tbody>
+        </table>
+      </div>
+      <p id="emptyState" class="empty" hidden>No runs match the current filters.</p>
+    </section>
+
+    <aside class="replay" aria-label="Replay viewer">
+      <div class="videoShell">
+        <video id="replayVideo" controls preload="metadata"></video>
+        <div id="videoPlaceholder">Select a run</div>
+      </div>
+      <dl class="metadata">
+        <div><dt>Player</dt><dd id="metaPlayer">-</dd></div>
+        <div><dt>Track</dt><dd id="metaTrack">-</dd></div>
+        <div><dt>Time</dt><dd id="metaTime">-</dd></div>
+        <div><dt>Uploaded</dt><dd id="metaUploaded">-</dd></div>
+      </dl>
+      <div class="downloadControls">
+        <label>
+          Quality
+          <select id="qualitySelect">
+            <option value="480p">480p</option>
+            <option value="240p">240p</option>
+            <option value="144p">144p</option>
+          </select>
+        </label>
+        <label>
+          FPS
+          <select id="fpsSelect">
+            <option value="original">Original</option>
+            <option value="30">30</option>
+            <option value="20">20</option>
+          </select>
+        </label>
+        <a id="originalLink" class="button disabled" href="#" aria-disabled="true">Original</a>
+        <button id="variantButton" type="button" disabled>Request MP4</button>
+      </div>
+      <p id="jobStatus" class="jobStatus"></p>
+    </aside>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
