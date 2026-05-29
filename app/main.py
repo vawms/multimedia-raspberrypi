@@ -44,9 +44,8 @@ ALLOWED_CONTENT_TYPES = {
 }
 
 TRACKS = [
-    ("rooftop", "Rooftop Sprint", 10, 20_000, 10 * 60_000),
-    ("crane", "Crane Dash", 20, 20_000, 10 * 60_000),
-    ("metro", "Metro Line", 30, 20_000, 10 * 60_000),
+    ("rooftop", "Level 1", 10, 20_000, 10 * 60_000),
+    ("crane", "Level 2", 20, 20_000, 10 * 60_000),
 ]
 
 QUALITY_HEIGHTS = {

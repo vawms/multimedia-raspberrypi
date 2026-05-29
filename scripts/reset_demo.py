@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import random
 import shutil
 import sqlite3
 import subprocess
@@ -11,6 +12,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+SOURCE_THUMBNAILS_DIR = ROOT / "thumbnails"
 DATA_DIR = Path(os.environ.get("RUNVAULT_DATA_DIR", ROOT / "data")).resolve()
 DB_PATH = Path(os.environ.get("RUNVAULT_DB_PATH", DATA_DIR / "runvault.sqlite3")).resolve()
 ORIGINALS_DIR = DATA_DIR / "originals"
@@ -18,17 +20,28 @@ THUMBNAILS_DIR = DATA_DIR / "thumbnails"
 DOWNLOADS_DIR = DATA_DIR / "downloads"
 
 TRACKS = [
-    ("rooftop", "Rooftop Sprint", 10, 20_000, 10 * 60_000),
-    ("crane", "Crane Dash", 20, 20_000, 10 * 60_000),
-    ("metro", "Metro Line", 30, 20_000, 10 * 60_000),
+    ("rooftop", "Level 1", 10, 20_000, 10 * 60_000),
+    ("crane", "Level 2", 20, 20_000, 10 * 60_000),
 ]
 
-DEMO_RUNS = [
-    ("Nico", "rooftop", 48_312, "#48b7a7"),
-    ("Alejandro", "rooftop", 51_908, "#d2a24c"),
-    ("Maya", "crane", 54_021, "#7f8cff"),
-    ("Luis", "crane", 62_449, "#e06c75"),
-    ("Sam", "metro", 69_113, "#72b47e"),
+GAMING_NAMES = [
+    "ShadowBolt", "NeonRacer", "PhantomX", "PixelGhost", "ThunderRun",
+    "VoidWalker", "CyberSprint", "IronFox", "StormRider", "NightHawk",
+    "BladeRunner", "CrimsonAce", "FrostByte", "DarkPulse", "SwiftKill",
+    "GlitchHunter", "ArcLight", "SteelWolf", "RubyDash", "QuickSilver",
+]
+
+COLORS = [
+    "#48b7a7", "#d2a24c", "#7f8cff", "#e06c75", "#72b47e",
+    "#f0a500", "#c678dd", "#56b6c2", "#e5c07b", "#61afef",
+    "#be5046", "#98c379", "#d19a66", "#528bff", "#2bbac5",
+    "#ff6b6b", "#4ecdc4", "#45b7d1", "#a29bfe", "#fd79a8",
+]
+
+# (track_id, time_range_ms)
+DEMO_TRACK_RANGES = [
+    ("rooftop", (65_000, 100_000)),
+    ("crane",   (80_000, 120_000)),
 ]
 
 
@@ -92,35 +105,30 @@ def make_video(output: Path, label: str, color: str) -> None:
     subprocess.run(cmd, check=True)
 
 
+def pick_random_thumbnail(dest: Path) -> None:
+    sources = sorted(SOURCE_THUMBNAILS_DIR.glob("*.jpg"))
+    shutil.copy(random.choice(sources), dest)
+
+
+def generate_demo_runs() -> list[tuple[str, str, int, str]]:
+    runs = []
+    for track_id, (low, high) in DEMO_TRACK_RANGES:
+        names = random.sample(GAMING_NAMES, 10)
+        colors = random.sample(COLORS, 10)
+        for name, color in zip(names, colors):
+            runs.append((name, track_id, random.randint(low, high), color))
+    return runs
+
+
 def seed() -> None:
     clear_demo()
     with sqlite3.connect(DB_PATH) as conn:
-        for index, (username, track_id, completion_time_ms, color) in enumerate(DEMO_RUNS):
+        for index, (username, track_id, completion_time_ms, color) in enumerate(generate_demo_runs()):
             run_id = uuid.uuid4().hex
             video_path = ORIGINALS_DIR / f"{run_id}.mp4"
             thumb_path = THUMBNAILS_DIR / f"{run_id}.jpg"
             make_video(video_path, f"{username} {completion_time_ms / 1000:.3f}s", color)
-            subprocess.run(
-                [
-                    "ffmpeg",
-                    "-hide_banner",
-                    "-loglevel",
-                    "error",
-                    "-y",
-                    "-ss",
-                    "00:00:01",
-                    "-i",
-                    str(video_path),
-                    "-frames:v",
-                    "1",
-                    "-update",
-                    "1",
-                    "-vf",
-                    "scale='min(640,iw)':-2",
-                    str(thumb_path),
-                ],
-                check=True,
-            )
+            pick_random_thumbnail(thumb_path)
             conn.execute(
                 """
                 INSERT INTO runs (
