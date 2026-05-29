@@ -210,8 +210,6 @@ def get_track_or_404(conn: sqlite3.Connection, track_id: str) -> sqlite3.Row:
 def validate_time(track: sqlite3.Row, completion_time_ms: int) -> None:
     if completion_time_ms <= 0:
         raise HTTPException(status_code=400, detail="completion_time_ms must be positive")
-    if completion_time_ms < track["min_time_ms"] or completion_time_ms > track["max_time_ms"]:
-        raise HTTPException(status_code=400, detail="completion_time_ms is outside the plausible range for this track")
 
 
 def validate_upload_file(video: UploadFile) -> str:
